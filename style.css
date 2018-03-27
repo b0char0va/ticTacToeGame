@@ -1,0 +1,92 @@
+.outer {
+    display: table;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+}
+
+.middle {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.inner {
+    margin-left: auto;
+    margin-right: auto;
+    width: 400px;
+    height: 400px;
+    border: 25px solid #FFBD9C;
+    border-radius: 5%;
+    box-shadow: 1px 5px 10px 4px #888888;
+    text-align: center;
+    background-color: #FFBD9C;
+    overflow: hidden;
+}
+
+.box {
+    width: 100%;
+    height: 95%;
+    padding: 20px;
+    color: white;
+    background: radial-gradient(#006600, #004A00, #003300);
+}
+
+.hide {
+    display: none;
+}
+
+.selectBtn {
+    border: none;
+    background-color: inherit;
+    color: darkgray;
+    padding: 0px 10px 0px 10px;
+    line-height: 0;
+}
+
+.table {
+    font-size: 25px;
+    height: inherit;
+    width: inherit;
+}
+
+.borderless td, .borderless tr {
+    border: none;
+}
+
+.row {
+    height: 5%;
+    width: 100%;
+    font-size: 12px;
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+.reset{
+    color: black;
+}
+
+.reset:hover{
+    text-decoration: underline;
+}
+
+html {
+    font-size: 1.2rem;
+}
+
+@include media-breakpoint-up(sm) {
+    html {
+        font-size: 1.2rem;
+    }
+}
+
+@include media-breakpoint-up(md) {
+    html {
+        font-size: 1.4rem;
+    }
+}
+
+@include media-breakpoint-up(lg) {
+    html {
+        font-size: 1.6rem;
+    }
+}
