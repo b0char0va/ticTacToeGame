@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Tic Tac Toe Game</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
@@ -13,41 +12,38 @@
 <div class="outer">
     <div class="middle">
         <div class="inner">
-                <div class="row">
-                    <span class="hide score">Player 1</span>
-                    <span class="hide" id="score2">Player 2</span>
-                    <span class="hide" id="scoreComp">Computer</span>
-                    <button type="button" class="selectBtn reset hide score" id="Reset">Reset All</button>
-                </div>
-        <div class="box">
-            <p class="p-2 players">How would you like to play?</p>
-            <button type="button" class="selectBtn players" id="one">One Player</button>
-            <button type="button" class="selectBtn players" id="two">Two Player</button>
+            <div class="box">
+                <p class=" players">How would you like to play?</p>
+                <button type="button" class="selectBtn players" id="one">One Player</button>
+                <button type="button" class="selectBtn players" id="two">Two Player</button>
 
-            <p class="p-2 hide single">Would you like to be X or O?</p>
-            <p class="p-2 hide double">Player 1: Would you like to be X or O?</p>
-            <button type="button" class="selectBtn XO hide" id="X">X</button>
-            <button type="button" class="selectBtn XO hide" id="O">O</button>
-            <button type="button" class="selectBtn hide" id="back"><i class="fa fa-arrow-left"></i>Back</button>
-
-                <table class="hide table borderless">
-                    <tr class="border-bottom thick">
-                        <td class="border-right thick"></td>
-                        <td class="border-right thick"></td>
-                        <td></td>
-                    </tr>
-                    <tr class="border-bottom thick">
-                        <td class="border-right thick"></td>
-                        <td class="border-right thick"></td>
-                        <td></td>
+                <p class="hide single">Would you like to be X or O?</p>
+                <p class="hide double">Player 1: Would you like to be X or O?</p>
+                <button type="button" class="selectBtn XO hide" id="X">X</button>
+                <button type="button" class="selectBtn XO hide" id="O">O</button>
+                <button type="button" class="selectBtn hide" id="back"><i class="fa fa-arrow-left"></i>Back</button>
+                <table class="table hide">
+                    <tr>
+                        <td class="cell" id="1"></td>
+                        <td class="cell" id="2"></td>
+                        <td class="cell" id="3"></td>
                     </tr>
                     <tr>
-                        <td class="border-right thick"></td>
-                        <td class="border-right"></td>
-                        <td></td>
+                        <td class="cell" id="4"></td>
+                        <td class="cell" id="5"></td>
+                        <td class="cell" id="6"></td>
+                    </tr>
+                    <tr>
+                        <td class="cell" id="7"></td>
+                        <td class="cell" id="8"></td>
+                        <td class="cell" id="9"></td>
                     </tr>
                 </table>
-        </div>
+            </div>
+            <span class="hide score">Player 1:</span>
+            <span class="hide" id="score2">Player 2:</span>
+            <span class="hide" id="scoreComp">Computer:</span>
+            <button type="button" class="selectBtn reset hide score" id="Reset">Reset All</button>
         </div>
     </div>
 </div>
