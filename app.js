@@ -1,7 +1,10 @@
-var game;
-var symbol;
-var compSymbol;
+var symbol;                // X or O symbol used by player1
+var compSymbol;          // X or O symbol used by computer
 var freecells = 9;
+var comp;               //computer
+var opponent;           //player1
+var pScore = 0;
+var cScore = 0;
 
 var m = [
     [-1, -1, -1],
@@ -10,69 +13,36 @@ var m = [
 ];
 
 $(document).ready(function () {
-    $("#one").click(function () {
-        game = 1;
-        $(".players").addClass("hide");
-        $(".XO").removeClass("hide");
-        $(".single").removeClass("hide");
-        $("#back").removeClass("hide");
-    });
-    $("#two").click(function () {
-        game = 2;
-        $(".players").addClass("hide");
-        $(".XO").removeClass("hide");
-        $(".double").removeClass("hide");
-        $("#back").removeClass("hide");
-    });
-    $("#back").click(function () {
-        $(".players").removeClass("hide");
-        $(".XO").addClass("hide");
-        $(".single").addClass("hide");
-        $(".double").addClass("hide");
-        $("#back").addClass("hide");
-    });
     $(".XO").click(function () {
         symbol = $(this).text();
-
+        $("#compTurn").slideUp(1000);
+        $("#playerTurn").slideDown(1000);
         $(".table").removeClass("disabled hide");
-        $(".score").removeClass("hide");
-        if (game === 1) {
-            $("#scoreComp").removeClass("hide");
-        } else {
-            $("#score2").removeClass("hide");
-        }
-        $(".single").addClass("hide");
-        $(".double").addClass("hide");
-        $(".players").addClass("hide");
+        $(".score").html("Player:" + pScore + " | Computer:" + cScore);
         $(".XO").addClass("hide");
-        $("#back").addClass("hide");
+        $("#reset").removeClass("hide");
     });
-    $("#Reset").click(function () {
+    $("#reset").click(function () {
         m = [
             [-1, -1, -1],
             [-1, -1, -1],
             [-1, -1, -1]
         ];
         freecells = 9;
+        $("#compTurn").slideUp();
+        $("#playerTurn").slideUp();
+        $("#reset").addClass("hide");
         $("#result").empty();
         $("#result").addClass("hide");
-        $("#win").addClass("hide");
-        $("#draw").addClass("hide");
         $(".cell").empty();
         $(".cell").removeClass("disabledCell");
         $(".table").addClass("hide");
-        $(".score").addClass("hide");
-        $("#score2").addClass("hide");
-        $("#scoreComp").addClass("hide");
-        $(".players").removeClass("hide");
-        $(".XO").addClass("hide");
-        $(".single").addClass("hide");
-        $(".double").addClass("hide");
-        $("#back").addClass("hide");
+        $(".XO").removeClass("hide");
+        $(".score").empty();
+        pScore=0;
+        cScore=0;
     });
     $(".cell").click(function () {
-        var comp;
-        var opponent;
         freecells--;
         if (symbol === "X") {
             opponent = 1;      // if player chooses to play with X, player is 1
@@ -85,8 +55,9 @@ $(document).ready(function () {
         }
         $(this).html(symbol);
         $(this).addClass("disabledCell");
+        $(".table").addClass("disabledTable");
         var cellId = parseInt($(this).attr("id"));
-        playerMatrixMove(cellId, opponent, comp, compSymbol);
+        playerMatrixMove(cellId);
     })
 });
 
@@ -94,7 +65,6 @@ function analyzeMoves(m, player, depth) {
     if (checkWinner(m, +!player)) {
         return {score: player === 1 ? 10 - depth : depth - 10}
     }
-
     var possibleMoves = [];
     for (var i = 0; i < 3; i++) {
         for (var j = 0; j < 3; j++) {
@@ -108,11 +78,9 @@ function analyzeMoves(m, player, depth) {
             m[i][j] = -1;
         }
     }
-
     if (possibleMoves.length === 0) {
         return {score: 0}
     }
-
     var bestMove, l;
     if (player === 0) {
         var max = Number.NEGATIVE_INFINITY;
@@ -143,53 +111,125 @@ function checkWinner(m, p) {
             return true;
         }
     }
-
     if (m[0][0] === p && m[1][1] === p && m[2][2] === p) {
         return true;
     }
-
     if (m[2][0] === p && m[1][1] === p && m[0][2] === p) {
         return true;
     }
-
     return false;
 }
 
-function playerMatrixMove(cellId, opponent, comp, compSymbol) {
+function playerMatrixMove(cellId) {
     var i = Math.floor((cellId - 1) / 3);
     var j = Math.floor((cellId - 1) % 3);
     m[i][j] = opponent;
-    compMatrixMove(m, opponent, comp, compSymbol); //passing updated matrix, computer's playing symbol value, and number of free cells
+    var playerWin = checkWinner(m, comp);
+    if (playerWin) {
+        pScore++;
+        $("#playerTurn").slideUp(1000);
+        setTimeout(function () {
+            $("#result").removeClass("hide");
+            $("#result").text("You won!!");
+            $(".table").addClass("disabled");
+        }, 1000);
+        setTimeout(function () {
+            resetGamePlayerTurn();
+        }, 2000);
+    } else if (freecells === 0 && !playerWin) {
+        $("#playerTurn").slideUp(1000);
+        setTimeout(function () {
+            $("#result").removeClass("hide");
+            $("#result").text("It's a draw!!");
+            $(".table").addClass("disabled");
+        }, 1000);
+        setTimeout(function () {
+            resetGamePlayerTurn();
+        }, 2000);
+    } else {
+        $("#compTurn").slideDown(1000);
+        $("#playerTurn").slideUp(1000);
+        setTimeout(function () {
+            compMatrixMove(m)
+        }, 2000); //passing updated matrix, computer's playing symbol value, and number of free cells
+    }
 }
 
-function compMatrixMove(m, opponent, player, compSymbol) {
-    if (checkWinner(m, opponent)) {
-        $("#result").removeClass("hide");
-        $("#result").text("You won!!");
-        $(".table").addClass("disabled");
-    } else if (freecells === 0 && !playerWin) {
-        $("#result").removeClass("hide");
-        $("#result").text("It's draw!!");
-        $(".table").addClass("disabled");
-    } else {
-        var gameStats = analyzeMoves(m, player, 0);
-        var i = gameStats.i;
-        var j = gameStats.j;
-        var cellId = (i * 3) + 1 + j;
-        m[i][j] = player;
-        $("#" + cellId).text(compSymbol);
-        $("#" + cellId).addClass("disabledCell");
-        freecells--;
-        var playerWin = checkWinner(m, player);
-        if (checkWinner(m, player)) {
+function compMatrixMove(m) {
+    var gameStats = analyzeMoves(m, comp, 0);
+    var i = gameStats.i;
+    var j = gameStats.j;
+    var cellId = (i * 3) + 1 + j;
+    m[i][j] = comp;
+    $("#" + cellId).text(compSymbol);
+    $("#" + cellId).addClass("disabledCell");
+    freecells--;
+    var compWin = checkWinner(m, comp);
+    if (compWin) {
+        cScore++;
+        $("#compTurn").slideUp(1000);
+        setTimeout(function () {
             $("#result").removeClass("hide");
             $("#result").text("You lost!!");
             $(".table").addClass("disabled");
-        } else if (freecells === 0 && !playerWin) {
+        }, 1000);
+        setTimeout(function () {
+            resetGameCompTurn();
+        }, 2000);
+
+    } else if (freecells === 0 && !compWin) {
+        $("#compTurn").slideUp(1000);
+        setTimeout(function () {
             $("#result").removeClass("hide");
             $("#result").text("It's draw!!");
             $(".table").addClass("disabled");
-        }
+        }, 1000);
+        setTimeout(function () {
+            resetGameCompTurn();
+        }, 2000);
+    } else {
+        $("#compTurn").slideUp(1000);
+        $("#playerTurn").slideDown(1000);
+        $(".table").removeClass("disabledTable");
     }
 }
+
+function resetGameCompTurn() {
+    m = [
+        [-1, -1, -1],
+        [-1, -1, -1],
+        [-1, -1, -1]
+    ];
+    freecells = 9;
+    $("span.score").html("Player:" + pScore + " | Computer:" + cScore);
+    $("#result").empty();
+    $("#result").addClass("hide");
+    $(".cell").empty();
+    $(".cell").removeClass("disabledCell");
+    $(".table").removeClass("disabled hide");
+    $("#compTurn").slideDown(1000);
+    $("#playerTurn").slideUp(1000);
+    setTimeout(function () {
+        compMatrixMove(m);
+    }, 2000);
+}
+
+function resetGamePlayerTurn() {
+    m = [
+        [-1, -1, -1],
+        [-1, -1, -1],
+        [-1, -1, -1]
+    ];
+    freecells = 9;
+    $("span.score").html("Player:" + pScore + " | Computer:" + cScore);
+    $("#result").empty();
+    $("#result").addClass("hide");
+    $(".cell").empty();
+    $(".cell").removeClass("disabledCell");
+    $(".table").removeClass("disabled disabledTable hide");
+    $("#compTurn").slideUp(1000);
+    $("#playerTurn").slideDown(1000);
+}
+
+
 

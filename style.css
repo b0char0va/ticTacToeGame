@@ -9,6 +9,41 @@
     display: table-cell;
     vertical-align: middle;
 }
+.bigInner{
+    margin-left: auto;
+    margin-right: auto;
+    width: 400px;
+    height:60px;
+    margin-bottom: 0;
+    position: relative;
+}
+
+#playerTurn{
+    margin-left:20px;
+    background-color: deepskyblue;
+    height:50px;
+    width:150px;
+    font-size: 18px;
+    color: white;
+    text-align: center;
+    display: none;
+    position:absolute;
+    bottom:0;
+}
+
+#player2Turn,#compTurn{
+    margin-right:20px;
+    background-color: palevioletred;
+    height:50px;
+    width:150px;
+    font-size: 18px;
+    color: white;
+    text-align: center;
+    display: none;
+    position:absolute;
+    bottom:0;
+    right:0;
+}
 
 .inner {
     margin-left: auto;
@@ -24,11 +59,13 @@
 }
 
 .box {
-    height: 83%;
+    height: 330px;
+    width: 330px;
     padding: 20px;
     color: white;
     background: radial-gradient(#006600, #004A00, #003300);
     text-align: center;
+    position: relative;
 }
 
 .hide {
@@ -48,12 +85,11 @@
     text-decoration: underline;
 }
 
-span{
-    padding-right: 5px;
-}
-
 .reset{
+    border: none;
+    background-color: inherit;
     color: black;
+    font-size: 14px;
 }
 
 .reset:hover{
@@ -80,9 +116,32 @@ span{
     pointer-events: none;
 }
 
+.disabledTable{
+    pointer-events: none;
+}
+
 .disabled {
     pointer-events: none;
-    opacity: 0.4;
+    opacity: 0.2;
+}
+
+#result{
+    position: absolute;
+    padding: 20px;
+    height: 330px;
+    width: 330px;
+    line-height: 330px;
+    color: white;
+    text-align: center;
+    top: 0;
+    left: 0;
+}
+
+.score{
+    width: 330px;
+    height:15px;
+    font-size: 14px;
+    text-align: left;
 }
 
 body {
